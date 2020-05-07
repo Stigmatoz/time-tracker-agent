@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Xml.Serialization;
 using TimeTrackerAgent.Entity;
 using TimeTrackerAgent.Utility;
 
@@ -28,8 +29,10 @@ namespace TimeTrackerAgent.Storage.Repository
             {
                 using (FileStream fs = new FileStream(FileHelper.GetFilePath(), FileMode.OpenOrCreate))
                 {
-                    byte[] arr = ObjSerialize.Serialize(data);
-                    fs.Write(arr, 0, arr.Length);
+                    //byte[] arr = ObjSerialize.Serialize(data);
+                    //fs.Write(arr, 0, arr.Length);
+                    XmlSerializer serializer = new XmlSerializer(typeof(Day));
+                    serializer.Serialize(fs, data);
                 }
             }
             catch (Exception ex) { }

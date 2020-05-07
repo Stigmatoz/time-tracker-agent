@@ -77,7 +77,7 @@ namespace TimeTrackerAgent.Tracker
                         var array = IconHelper.IconToBytes(ico);
                         var app = _day.Applications.FirstOrDefault(x => x.Name == processModule.ModuleName);
                         if (app == null)
-                            _day.AddApplication(processModule.ModuleName, processModule.ModuleName, array);
+                            _day.AddApplication(processModule.ModuleName, processModule.FileName, array);
                         else
                         {
                             app.IncrementSummary();

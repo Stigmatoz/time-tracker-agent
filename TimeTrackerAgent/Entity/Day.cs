@@ -6,7 +6,7 @@ namespace TimeTrackerAgent.Entity
     [Serializable]
     public class Day
     {
-        public IList<Application> Applications { get; private set; } = new List<Application>();
+        public List<Application> Applications { get; set; } = new List<Application>();
 
         #region Public
         public void AddApplication(string name, string path, byte[] array)

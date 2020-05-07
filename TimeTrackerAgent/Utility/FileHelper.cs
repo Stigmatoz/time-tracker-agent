@@ -8,7 +8,7 @@ namespace TimeTrackerAgent.Utility
     {
         public static string GetFilePath()
         {
-            return Path.Combine(GetDirectoryPath(), $"{DateTime.UtcNow.Date.ToString("dd.MM.yyyy")}.bin");
+            return Path.Combine(GetDirectoryPath(), $"{DateTime.UtcNow.Date.ToString("dd.MM.yyyy")}.xml");
         }
 
         public static string GetDirectoryPath()

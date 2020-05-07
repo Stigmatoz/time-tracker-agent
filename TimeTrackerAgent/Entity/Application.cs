@@ -6,6 +6,8 @@ namespace TimeTrackerAgent.Entity
     public class Application
     {
         #region .ctor
+        public Application() {}
+
         public Application(string name, string path, byte[] array)
         {
             Name = name;
@@ -15,10 +17,10 @@ namespace TimeTrackerAgent.Entity
         }
         #endregion
 
-        public string Name { get; private set; }
-        public string Path { get; private set; }
-        public byte[] Icon { get; private set; }
-        public TimeSpan SummaryTime { get; private set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
+        public byte[] Icon { get; set; }
+        public TimeSpan SummaryTime { get; set; }
 
         #region Public
         public void IncrementSummary()
