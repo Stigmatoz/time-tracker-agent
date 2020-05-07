@@ -31,13 +31,13 @@ namespace TimeTrackerAgent.Tracker
 
         #region Fields
         private Timer _activityTimer;
-        private Day _day;
+        private ICurrentDay _day;
         #endregion
 
         #region .ctor
         public WinTracker(ICurrentDay currentDay)
         {
-            _day = currentDay.Value;
+            _day = currentDay;
             _activityTimer = new Timer(1000);
             _activityTimer.AutoReset = true;
             _activityTimer.Elapsed += ActivityTimerElapsed;
@@ -68,20 +68,22 @@ namespace TimeTrackerAgent.Tracker
             try
             {
                 var lastInputTime = GetLastInputTime();
-                if (lastInputTime.HasValue && lastInputTime.Value == 0 || lastInputTime.Value < 5000)
+                if (lastInputTime.HasValue && lastInputTime.Value == 0 || lastInputTime.Value < 5)
                 {
-                    var processModule = GetActiveProcessModule();
-                    if (processModule != null)
+                    var process = GetActiveProcessModule();
+                    if (process != null)
                     {
-                        Icon ico = Icon.ExtractAssociatedIcon(processModule.FileName);
+                        CheckCurrentDay();
+
+                        Icon ico = Icon.ExtractAssociatedIcon(process.MainModule.FileName);
                         var array = IconHelper.IconToBytes(ico);
-                        var app = _day.Applications.FirstOrDefault(x => x.Name == processModule.ModuleName);
+                        var app = _day.Value.Applications.FirstOrDefault(x => x.Name == process.MainModule.ModuleName);
                         if (app == null)
-                            _day.AddApplication(processModule.ModuleName, processModule.FileName, array);
+                            _day.Value.AddApplication(process.MainModule.ModuleName, process.MainModule.FileName, process.MainWindowTitle, array);
                         else
                         {
                             app.IncrementSummary();
-                            Console.WriteLine($"{app.Name} {app.SummaryTime.ToString()}");
+                            Console.WriteLine($"{app.Name} {app.WindowTitle} {app.SummaryTime.ToString()}");
                         }
                     }
                 }
@@ -91,7 +93,8 @@ namespace TimeTrackerAgent.Tracker
             catch (Exception ex) { }
         }
 
-        private ProcessModule GetActiveProcessModule()
+        #region Win API
+        private Process GetActiveProcessModule()
         {
             try
             {
@@ -103,7 +106,7 @@ namespace TimeTrackerAgent.Tracker
                 GetWindowThreadProcessId(handle, out pid);
                 Process p = Process.GetProcessById((int)pid);
                 if (p != null && p.MainModule != null)
-                    return p.MainModule;
+                    return p;
                 else return null;
             }
             catch (Exception ex)
@@ -135,6 +138,14 @@ namespace TimeTrackerAgent.Tracker
             {
                 return null;
             }
+        } 
+        #endregion
+
+        private void CheckCurrentDay()
+        {
+            if (DateTime.UtcNow.Day != _day.Value.Date.Day)
+                _day.ActualizeDate();
+
         }
         #endregion
     }

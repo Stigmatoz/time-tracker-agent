@@ -19,5 +19,10 @@ namespace TimeTrackerAgent.Storage
             get { return _day; }
             private set { _day = value; }
         }
+
+        public void ActualizeDate()
+        {
+            Value = new Day();
+        }
     }
 }

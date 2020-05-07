@@ -8,17 +8,19 @@ namespace TimeTrackerAgent.Entity
         #region .ctor
         public Application() {}
 
-        public Application(string name, string path, byte[] array)
+        public Application(string name, string path, string windowTitle, byte[] array)
         {
             Name = name;
             SummaryTime = new TimeSpan();
             Icon = array;
             Path = path;
+            WindowTitle = windowTitle;
         }
         #endregion
 
         public string Name { get; set; }
         public string Path { get; set; }
+        public string WindowTitle { get; set; }
         public byte[] Icon { get; set; }
         public TimeSpan SummaryTime { get; set; }
 
