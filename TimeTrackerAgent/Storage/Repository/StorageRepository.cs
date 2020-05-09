@@ -10,7 +10,21 @@ namespace TimeTrackerAgent.Storage.Repository
     {
         public Day GetCurrentDay()
         {
-            return new Day();
+            try
+            {
+                if (Directory.Exists(FileHelper.GetFilePath()))
+                    return new Day();
+
+                using (FileStream fs = new FileStream(FileHelper.GetFilePath(), FileMode.OpenOrCreate))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(Day));
+                    return (Day)serializer.Deserialize(fs);
+                }
+            }
+            catch (Exception ex) 
+            { 
+                return new Day(); 
+            }
         }
 
         public TimeStorage GetAll()
@@ -29,8 +43,6 @@ namespace TimeTrackerAgent.Storage.Repository
             {
                 using (FileStream fs = new FileStream(FileHelper.GetFilePath(), FileMode.OpenOrCreate))
                 {
-                    //byte[] arr = ObjSerialize.Serialize(data);
-                    //fs.Write(arr, 0, arr.Length);
                     XmlSerializer serializer = new XmlSerializer(typeof(Day));
                     serializer.Serialize(fs, data);
                 }
