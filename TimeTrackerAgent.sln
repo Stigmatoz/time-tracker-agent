@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTrackerAgent", "TimeTrackerAgent\TimeTrackerAgent.csproj", "{264D248F-95DE-4884-86E6-B9401B69DD9B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTrackerAgent", "src\TimeTrackerAgent\TimeTrackerAgent.csproj", "{264D248F-95DE-4884-86E6-B9401B69DD9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
