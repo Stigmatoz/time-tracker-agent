@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TimeTrackerAgent.DTO;
+using TimeTrackerAgent.Storage.Repository;
 
 namespace TimeTrackerAgent.Controllers
 {
@@ -11,16 +11,19 @@ namespace TimeTrackerAgent.Controllers
     public class ApiController : ControllerBase
     {
         private readonly ILogger<ApiController> _logger;
+        private readonly IStorageRepository _storage;
 
-        public ApiController(ILogger<ApiController> logger)
+        public ApiController(ILogger<ApiController> logger, IStorageRepository storage)
         {
             _logger = logger;
+            _storage = storage;
         }
 
         [HttpGet]
-        public string Get()
+        public async Task<IActionResult> GetOverallInfo()
         {
-            return null;
+            var day = await _storage.GetCurrentDayAsync();
+            return Ok(new DashboardInfo(day));
         }
     }
 }

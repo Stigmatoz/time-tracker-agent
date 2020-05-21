@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Threading.Tasks;
 using TimeTrackerAgent.Entity;
 
 namespace TimeTrackerAgent.Storage.Repository
 {
     public interface IStorageRepository
     {
-        Day GetCurrentDay();
+        Task<Day> GetCurrentDayAsync();
         TimeStorage GetAll();
         TimeStorage Query(Predicate<TimeStorage> predicate);
-        void Save(Day data);
+        Task SaveAsync(Day data);
     }
 }

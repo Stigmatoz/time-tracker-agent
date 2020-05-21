@@ -29,11 +29,14 @@ namespace TimeTrackerAgent
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            _logger.LogInformation("Start service");
             OSPlatform platform = OSHelper.GetOSPlatform();
             if (platform == OSPlatform.Windows)
                 _tracker = _factory.GetWinTracker();
             if (platform == OSPlatform.Linux)
                 _tracker = _factory.GetLinuxTracker();
+
+            _logger.LogInformation($"OS {platform}");
 
             await _storageService.StartSaveTracking();
 

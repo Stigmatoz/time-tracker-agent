@@ -1,24 +1,17 @@
 ﻿using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 
 namespace TimeTrackerAgent.Utility
 {
     public static class IconHelper
     {
-        public static byte[] IconToBytes(Icon icon)
+        public static byte[] IconToBytes(Bitmap img)
         {
-            using (MemoryStream ms = new MemoryStream())
+            using (var stream = new MemoryStream())
             {
-                icon.Save(ms);
-                return ms.ToArray();
-            }
-        }
-
-        public static Icon BytesToIcon(byte[] bytes)
-        {
-            using (MemoryStream ms = new MemoryStream(bytes))
-            {
-                return new Icon(ms);
+                img.Save(stream, ImageFormat.Png);
+                return stream.ToArray();
             }
         }
     }

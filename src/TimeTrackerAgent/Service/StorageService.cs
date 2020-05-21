@@ -41,7 +41,7 @@ namespace TimeTrackerAgent.Service
 
         private void ActivityTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            _storageRepository.Save(_currentDay.Value);
+            _storageRepository.SaveAsync(_currentDay.Value);
         }
     }
 }

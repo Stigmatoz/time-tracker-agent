@@ -76,19 +76,22 @@ namespace TimeTrackerAgent.Tracker
                         CheckCurrentDay();
 
                         Icon ico = Icon.ExtractAssociatedIcon(process.MainModule.FileName);
-                        var array = IconHelper.IconToBytes(ico);
+                        var array = IconHelper.IconToBytes(ico.ToBitmap());
                         var app = _day.Value.Applications.FirstOrDefault(x => x.Name == process.MainModule.ModuleName);
                         if (app == null)
                             _day.Value.AddApplication(process.MainModule.ModuleName, process.MainModule.FileName, process.MainWindowTitle, array);
                         else
                         {
                             app.IncrementSummary();
-                            Console.WriteLine($"{app.Name} {app.WindowTitle} {app.SummaryTime.ToString()}");
+                            //Console.WriteLine($"{app.Name} {app.WindowTitle} {app.SummaryTime.ToString()}");
                         }
                     }
                 }
-                else if (lastInputTime > 5000)
+                else if (lastInputTime > 5)
+                {
+                    _day.Value.IncrementIdleTime();
                     return;
+                }
             }
             catch (Exception ex) { }
         }

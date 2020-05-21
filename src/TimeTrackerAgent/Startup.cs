@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging.EventLog;
-using TimeTrackerAgent.Cache;
 using TimeTrackerAgent.Service;
 using TimeTrackerAgent.Storage;
 using TimeTrackerAgent.Storage.Repository;
@@ -33,9 +32,9 @@ namespace TimeTrackerAgent
             services.AddTransient<IStorageRepository, StorageRepository>();
             services.AddTransient<IStorageService, StorageService>();
             services.AddSingleton<ICurrentDay, CurrentDay>();
-            //services.AddSingleton(typeof(IMemoryCacheManager<>), typeof(MemoryCacheManager<>));
 
             services.AddControllers();
+            services.AddMvc().AddNewtonsoftJson();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

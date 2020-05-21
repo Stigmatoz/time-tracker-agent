@@ -6,9 +6,9 @@ namespace TimeTrackerAgent.Utility
 {
     public class FileHelper
     {
-        public static string GetFilePath()
+        public static string GetFilePath(DateTime date)
         {
-            return Path.Combine(GetDirectoryPath(), $"{DateTime.UtcNow.Date.ToString("dd.MM.yyyy")}.xml");
+            return Path.Combine(GetDirectoryPath(), $"{date:dd.MM.yyyy}.xml");
         }
 
         public static string GetDirectoryPath()

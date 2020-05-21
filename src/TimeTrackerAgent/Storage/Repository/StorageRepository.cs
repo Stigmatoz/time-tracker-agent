@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using TimeTrackerAgent.Entity;
 using TimeTrackerAgent.Utility;
@@ -8,23 +10,44 @@ namespace TimeTrackerAgent.Storage.Repository
 {
     public class StorageRepository : IStorageRepository
     {
-        public Day GetCurrentDay()
-        {
-            try
-            {
-                if (Directory.Exists(FileHelper.GetFilePath()))
-                    return new Day();
+        private object _lock = new object();
+        private ILogger<StorageRepository> _logger;
 
-                using (FileStream fs = new FileStream(FileHelper.GetFilePath(), FileMode.OpenOrCreate))
+        public StorageRepository(ILogger<StorageRepository> logger)
+        {
+            _logger = logger;
+        }
+
+        #region public
+        public async Task<Day> GetCurrentDayAsync()
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                try
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(Day));
-                    return (Day)serializer.Deserialize(fs);
+                    Day day = new Day();
+
+                    if (!File.Exists(FileHelper.GetFilePath(DateTime.Now)))
+                        return day;
+                    
+                    FileReadWriteWrapper(() =>
+                    {
+                        using (StreamReader sr = new StreamReader(FileHelper.GetFilePath(DateTime.Now)))
+                        {
+                            XmlSerializer serializer = new XmlSerializer(typeof(Day));
+                            day = (Day)serializer.Deserialize(sr);
+                        }
+                    });
+
+                    return day;
                 }
-            }
-            catch (Exception ex) 
-            { 
-                return new Day(); 
-            }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    _logger.LogError(ex.InnerException?.Message);
+                    return new Day();
+                }
+            });
         }
 
         public TimeStorage GetAll()
@@ -37,17 +60,38 @@ namespace TimeTrackerAgent.Storage.Repository
             throw new NotImplementedException();
         }
 
-        public void Save(Day data)
+        public async Task SaveAsync(Day data)
         {
-            try
+            await Task.Factory.StartNew(() =>
             {
-                using (FileStream fs = new FileStream(FileHelper.GetFilePath(), FileMode.OpenOrCreate))
+                try
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(Day));
-                    serializer.Serialize(fs, data);
+                    FileReadWriteWrapper(() =>
+                    {
+                        using (StreamWriter sw = new StreamWriter(File.Open(FileHelper.GetFilePath(DateTime.Now), FileMode.Create)))
+                        {
+                            XmlSerializer serializer = new XmlSerializer(typeof(Day));
+                            serializer.Serialize(sw, data);
+                        }
+                    });
                 }
-            }
-            catch (Exception ex) { }
+                catch (Exception ex) 
+                {
+                    _logger.LogError(ex.Message);
+                    _logger.LogError(ex.InnerException?.Message);
+                }
+            });
         }
+        #endregion
+
+        #region private
+        private void FileReadWriteWrapper(Action action)
+        {
+            lock (_lock)
+            {
+                action();
+            }
+        }
+        #endregion
     }
 }
