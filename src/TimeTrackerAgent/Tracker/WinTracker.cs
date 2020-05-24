@@ -146,7 +146,7 @@ namespace TimeTrackerAgent.Tracker
 
         private void CheckCurrentDay()
         {
-            if (DateTime.UtcNow.Day != _day.Value.Date.Day)
+            if (DateTime.Now.Day != _day.Value.Date.Day)
                 _day.ActualizeDate();
 
         }
