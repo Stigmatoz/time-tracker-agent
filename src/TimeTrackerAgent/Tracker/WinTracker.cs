@@ -83,8 +83,9 @@ namespace TimeTrackerAgent.Tracker
                         else
                         {
                             app.IncrementSummary();
-                            //Console.WriteLine($"{app.Name} {app.WindowTitle} {app.SummaryTime.ToString()}");
                         }
+
+                        _day.Value.IncrementActiveTime();
                     }
                 }
                 else if (lastInputTime > 5)

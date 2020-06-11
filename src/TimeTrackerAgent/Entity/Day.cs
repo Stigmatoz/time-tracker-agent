@@ -9,11 +9,13 @@ namespace TimeTrackerAgent.Entity
         public Day()
         {
             Date = DateTime.Now;
-            Idle = TimeSpan.Zero;
+            IdleTime = TimeSpan.Zero;
+            ActiveTime = TimeSpan.Zero;
         }
 
         public DateTime Date { get; set; }
-        public TimeSpan Idle { get; set; }
+        public TimeSpan ActiveTime { get; set; }
+        public TimeSpan IdleTime { get; set; }
 
         public List<Application> Applications { get; set; } = new List<Application>();
 
@@ -25,7 +27,12 @@ namespace TimeTrackerAgent.Entity
 
         public void IncrementIdleTime()
         {
-            Idle = Idle.Add(TimeSpan.FromSeconds(1));
+            IdleTime = IdleTime.Add(TimeSpan.FromSeconds(1));
+        }
+
+        public void IncrementActiveTime()
+        {
+            ActiveTime = ActiveTime.Add(TimeSpan.FromSeconds(1));
         }
         #endregion
     }

@@ -10,8 +10,8 @@ namespace TimeTrackerAgent.DTO
     {
         public DashboardInfo(Day currentDay)
         {
-            WorkingTime = TimeSpan.FromSeconds(currentDay.Applications.Sum(x => x.SummaryTime.TotalSeconds));
-            IdleTime = currentDay.Idle;
+            WorkingTime = currentDay.ActiveTime;
+            IdleTime = currentDay.IdleTime;
             TopApplications = currentDay.Applications.OrderByDescending(x => x.SummaryTime).Take(10).ToList();
             MachineInfo = new LocalMachine(OSHelper.GetOSPlatform(), OSHelper.GetOSDescription());
         }
