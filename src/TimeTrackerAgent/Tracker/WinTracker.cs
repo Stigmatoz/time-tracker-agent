@@ -90,6 +90,7 @@ namespace TimeTrackerAgent.Tracker
                 }
                 else if (lastInputTime > 5)
                 {
+                    CheckCurrentDay();
                     _day.Value.IncrementIdleTime();
                     return;
                 }
