@@ -3,18 +3,38 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTrackerAgent", "src\TimeTrackerAgent\TimeTrackerAgent.csproj", "{264D248F-95DE-4884-86E6-B9401B69DD9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTrackerAgent", "src\TimeTrackerAgent\TimeTrackerAgent.csproj", "{264D248F-95DE-4884-86E6-B9401B69DD9B}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "TimeTrackerAgent.Setup", "src\TimeTrackerAgent.Setup\TimeTrackerAgent.Setup.wixproj", "{312470B8-4DBF-4D1B-B4C1-F61B8DB268D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Debug|x64.Build.0 = Debug|Any CPU
+		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Debug|x86.Build.0 = Debug|Any CPU
 		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Release|x64.ActiveCfg = Release|x64
+		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Release|x64.Build.0 = Release|x64
+		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Release|x86.ActiveCfg = Release|x86
+		{264D248F-95DE-4884-86E6-B9401B69DD9B}.Release|x86.Build.0 = Release|x86
+		{312470B8-4DBF-4D1B-B4C1-F61B8DB268D1}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{312470B8-4DBF-4D1B-B4C1-F61B8DB268D1}.Debug|x64.ActiveCfg = Debug|x64
+		{312470B8-4DBF-4D1B-B4C1-F61B8DB268D1}.Debug|x86.ActiveCfg = Debug|x86
+		{312470B8-4DBF-4D1B-B4C1-F61B8DB268D1}.Release|Any CPU.ActiveCfg = Release|x86
+		{312470B8-4DBF-4D1B-B4C1-F61B8DB268D1}.Release|x64.ActiveCfg = Release|x64
+		{312470B8-4DBF-4D1B-B4C1-F61B8DB268D1}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

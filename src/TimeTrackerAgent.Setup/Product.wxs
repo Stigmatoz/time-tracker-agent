@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?define ProductVersion="1.0.4.0" ?>
+
+  <!-- Give product a unique ID per platform -->
+  <?if $(var.Platform)=x64 ?>
+  <?define ProductCode = "{DE3B1CBB-BF7B-46BA-BCBB-4B1542C9B3BB}" ?>
+  <?else?>
+  <?define ProductCode = "{B6C0672A-D365-4D2B-B6A1-42E908D181E0}" ?>
+  <?endif?>
+
+  <!-- Fixed upgrade Id -->
+  <?define UpgradeCode = "{8C197FE6-57DF-41FD-A0CD-84B5D3B97BDC}" ?>
+
+  <!-- Define main product -->
+  <Product Id="*"
+           Version="$(var.ProductVersion)"
+           Name="!(loc.ProductName_$(var.Platform))"
+           Language="!(loc.Language)"
+           Manufacturer="!(loc.Company)"
+           UpgradeCode="$(var.UpgradeCode)">
+
+    <!-- Provide package details -->
+    <Package InstallerVersion="200"
+             Compressed="yes"
+             InstallScope="perMachine"
+             AdminImage="yes"
+             InstallPrivileges="elevated"
+             Manufacturer="!(loc.Company)"
+             Description="!(loc.Description)"
+             Keywords="!(loc.Keywords)"
+             Comments="!(loc.Comments)"
+             Languages="!(loc.Language)"
+             />
+
+    <!-- Major Upgrade Rule to disallow downgrades -->
+    <MajorUpgrade AllowDowngrades="no" DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." AllowSameVersionUpgrades="no" />
+
+    <!-- Include .cab file into .msi file -->
+    <MediaTemplate
+      EmbedCab="yes"
+      />
+
+    <!-- Define main app icon -->
+    <Icon Id="icon.ico" SourceFile="$(var.TimeTrackerAgent.ProjectDir)\app.ico" />
+    <!-- Run as admin -->
+    <Property Id="MSIUSEREALADMINDETECTION" Value="1" />
+    <!-- Use the icon.ico icon for this installer (shows up in Add/Remove programs) -->
+    <Property Id="ARPPRODUCTICON">icon.ico</Property>
+    <!-- Help/Support website (shows in the Add/Remove programs) -->
+    <Property Id="ARPURLINFOABOUT">castlewania.alex@gmail.com</Property>
+
+    <!-- Create a basic UI for the installer -->
+    <UIRef Id="WixUI_Minimal" />
+
+    <!-- Change the installer UI background images -->
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\Assets\Background.bmp" />
+    <WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\Assets\Banner.bmp" />
+
+    <!-- Define components, shortcuts, files etc... for installer -->
+    <Feature Id="ProductFeature" Title="TimeTrackerAgent" Level="1">
+
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="PublishedComponents" />
+
+    </Feature>
+    
+     <InstallExecuteSequence>
+       <Custom Action='StopWinService' Before='RemoveFiles'/>
+       <Custom Action='CreateWinService' Before='InstallFinalize'/>
+       <Custom Action='StartWinService' Before='InstallFinalize'/>
+    </InstallExecuteSequence>
+    
+    <CustomAction Id="CreateWinService" Directory="INSTALLFOLDER" ExeCommand='SC CREATE TimeTrackerAgent binpath="[INSTALLFOLDER]TimeTrackerAgent.exe start=auto"' Execute="deferred" Return="ignore" Impersonate="no"/>
+    <CustomAction Id="StartWinService" Directory="INSTALLFOLDER" ExeCommand='SC START TimeTrackerAgent"' Execute="deferred" Return="ignore" Impersonate="no"/>
+    <CustomAction Id="StopWinService" Directory="INSTALLFOLDER" ExeCommand='SC STOP TimeTrackerAgent"' Execute="deferred" Return="ignore" Impersonate="no"/>
+
+  </Product>
+
+</Wix>

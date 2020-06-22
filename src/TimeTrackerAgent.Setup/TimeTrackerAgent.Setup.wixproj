@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" InitialTargets="EnsureWixToolsetInstalled" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == 'x86' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == 'x64' ">x64</Platform>
+    <ProductVersion>1.0.4.0</ProductVersion>
+    <ProjectGuid>312470b8-4dbf-4d1b-b4c1-f61b8db268d1</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>TimeTrackerAgent.Setup.$(ProductVersion)</OutputName>
+    <OutputType>Package</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <LeaveTemporaryFiles>False</LeaveTemporaryFiles>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <LeaveTemporaryFiles>False</LeaveTemporaryFiles>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Components.wxs" />
+    <Compile Include="ComponentsGenerated.wxs" />
+    <Compile Include="Directories.wxs" />
+    <Compile Include="Product.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TimeTrackerAgent\TimeTrackerAgent.csproj">
+      <Name>TimeTrackerAgent</Name>
+      <Project>{264d248f-95de-4884-86e6-b9401b69dd9b}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Common.wxl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TimeTrackerAgent\TimeTrackerAgent.csproj">
+      <Name>TimeTrackerAgent</Name>
+      <Project>{f7d45e05-717f-4cfd-81e4-58854125aa0f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Background.bmp" />
+    <Content Include="Assets\Banner.bmp" />
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
+  <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
+    <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see http://wixtoolset.org/releases/" />
+  </Target>
+  <!-- Before build -->
+  <Target Name="BeforeBuild">
+    <!-- Clean previous build folder -->
+    <Exec Command="rd /s /q ..\TimeTrackerAgent\bin\$(Configuration)\netcoreapp3.1\win-$(Platform)\publish" />
+    <!-- Publish dotnet core app -->
+    <Exec Command="dotnet publish ..\TimeTrackerAgent\TimeTrackerAgent.csproj -c $(Configuration) -r win-$(Platform)" />
+    <!-- Define some variables we need -->
+    <PropertyGroup>
+      <DefineConstants>BuildVersion=%(AssemblyVersion.Version);BasePath=..\TimeTrackerAgent\bin\$(Configuration)\netcoreapp3.1\win-$(Platform)\publish</DefineConstants>
+    </PropertyGroup>
+    <!-- Harvest file components from publish folder -->
+    <HeatDirectory OutputFile="ComponentsGenerated.wxs" DirectoryRefId="INSTALLFOLDER" ComponentGroupName="PublishedComponents" SuppressCom="true" Directory="..\TimeTrackerAgent\bin\$(Configuration)\netcoreapp3.1\win-$(Platform)\publish" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.BasePath" />
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
