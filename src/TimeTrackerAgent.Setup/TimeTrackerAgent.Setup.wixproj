@@ -7,7 +7,7 @@
     <ProductVersion>1.0.0.0</ProductVersion>
     <ProjectGuid>312470b8-4dbf-4d1b-b4c1-f61b8db268d1</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>TimeTrackerAgent.Setup.$(ProductVersion)</OutputName>
+    <OutputName>TimeTrackerAgent.Setup.$(ProductVersion)_$(Platform)</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
@@ -76,7 +76,7 @@
     <!-- Clean previous build folder -->
     <Exec Command="rd /s /q ..\TimeTrackerAgent\bin\$(Configuration)\netcoreapp3.1\win-$(Platform)\publish" />
     <!-- Publish dotnet core app -->
-    <Exec Command="dotnet publish ..\TimeTrackerAgent\TimeTrackerAgent.csproj -c $(Configuration) -r win-$(Platform)" />
+    <Exec Command="dotnet publish ..\TimeTrackerAgent\TimeTrackerAgent.csproj -c $(Configuration) -r win-$(Platform) --self-contained true" />
     <!-- Define some variables we need -->
     <PropertyGroup>
       <DefineConstants>BuildVersion=%(AssemblyVersion.Version);BasePath=..\TimeTrackerAgent\bin\$(Configuration)\netcoreapp3.1\win-$(Platform)\publish</DefineConstants>

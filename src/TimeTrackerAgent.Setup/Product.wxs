@@ -32,10 +32,10 @@
              Keywords="!(loc.Keywords)"
              Comments="!(loc.Comments)"
              Languages="!(loc.Language)"
-             />
+             />    
 
     <!-- Major Upgrade Rule to disallow downgrades -->
-    <MajorUpgrade AllowDowngrades="no" DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." AllowSameVersionUpgrades="no" />
+    <MajorUpgrade AllowDowngrades="no" DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." AllowSameVersionUpgrades="yes" />
 
     <!-- Include .cab file into .msi file -->
     <MediaTemplate
@@ -67,14 +67,10 @@
     </Feature>
     
      <InstallExecuteSequence>
-       <Custom Action='StopWinService' Before='RemoveFiles'/>
-       <Custom Action='CreateWinService' Before='InstallFinalize'/>
-       <Custom Action='StartWinService' Before='InstallFinalize'/>
+       <Custom Action='StartProcess' Before='InstallFinalize'/>
     </InstallExecuteSequence>
     
-    <CustomAction Id="CreateWinService" Directory="INSTALLFOLDER" ExeCommand='SC CREATE TimeTrackerAgent binpath="[INSTALLFOLDER]TimeTrackerAgent.exe start=auto"' Execute="deferred" Return="ignore" Impersonate="no"/>
-    <CustomAction Id="StartWinService" Directory="INSTALLFOLDER" ExeCommand='SC START TimeTrackerAgent"' Execute="deferred" Return="ignore" Impersonate="no"/>
-    <CustomAction Id="StopWinService" Directory="INSTALLFOLDER" ExeCommand='SC STOP TimeTrackerAgent"' Execute="deferred" Return="ignore" Impersonate="no"/>
+    <CustomAction Id="StartProcess" Directory="INSTALLFOLDER" ExeCommand='[SystemFolder]cmd.exe /C start TimeTrackerAgent.exe"' Execute="deferred" Return="ignore" Impersonate="no"/>
 
   </Product>
 

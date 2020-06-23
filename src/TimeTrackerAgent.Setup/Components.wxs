@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:fire="http://schemas.microsoft.com/wix/FirewallExtension">
 
   <Fragment>
 
@@ -8,9 +9,10 @@
 
       <!-- Shortcut -->
       <ComponentRef Id="MainAppShortcut" />
+      <ComponentRef Id="cmpFirewallException" />
 
     </ComponentGroup>
-      
+
     <!-- Installed files -->
     <DirectoryRef Id="INSTALLFOLDER" FileSource="..\TimeTrackerAgent\bin\Release\netcoreapp3.1\win-$(var.Platform)\publish\">
 
@@ -24,13 +26,22 @@
                   WorkingDirectory="INSTALLFOLDER"
                   Icon="icon.ico"
                   />
-        
         <!-- Our unique key for this component/shortcut -->
         <RegistryValue Id="RegShortcutKey" Root="HKCU" Key="SOFTWARE\$(loc.ProductNameFolder)" Name="Shortcut" Value="1" Type="integer" KeyPath="yes" />
 
         <!--Remove start menu items -->
         <RemoveFolder Id="RemoveStartMenu" Directory="InstallProgramMenuFolder" On="uninstall" />
 
+      </Component>
+
+      <Component Id="cmpFirewallException" Guid="{87617436-AE1C-4C87-BB2D-1CA3531DBC46}" KeyPath="yes">
+        <fire:FirewallException Id="FirewallTimeTrackerAgentTCP"
+                Program="[INSTALLFOLDER]TimeTrackerAgent.exe"
+                Description="Lets requests through"
+                Name="TimeTrackerAgent"
+                Scope="any"
+                Protocol="tcp"
+                Port="5050" IgnoreFailure="yes" Profile="domain"/>
       </Component>
 
     </DirectoryRef>
