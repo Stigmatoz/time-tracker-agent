@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -31,12 +32,14 @@ namespace TimeTrackerAgent.Tracker
 
         #region Fields
         private Timer _activityTimer;
+        private ILogger<TrackerFactory.TrackerFactory> _logger;
         private ICurrentDay _day;
         #endregion
 
         #region .ctor
-        public WinTracker(ICurrentDay currentDay)
+        public WinTracker(ICurrentDay currentDay, ILogger<TrackerFactory.TrackerFactory> logger)
         {
+            _logger = logger;
             _day = currentDay;
             _activityTimer = new Timer(1000);
             _activityTimer.AutoReset = true;
@@ -95,7 +98,10 @@ namespace TimeTrackerAgent.Tracker
                     return;
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex.Message} {ex.InnerException?.Message}");
+            }
         }
 
         #region Win API
@@ -116,6 +122,7 @@ namespace TimeTrackerAgent.Tracker
             }
             catch (Exception ex)
             {
+                _logger.LogError($"{ex.Message} {ex.InnerException?.Message}");
                 return null;
             }
         }
@@ -141,9 +148,10 @@ namespace TimeTrackerAgent.Tracker
             }
             catch (Exception ex)
             {
+                _logger.LogError($"{ex.Message} {ex.InnerException?.Message}");
                 return null;
             }
-        } 
+        }
         #endregion
 
         private void CheckCurrentDay()

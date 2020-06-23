@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace TimeTrackerAgent
 {
@@ -12,6 +14,11 @@ namespace TimeTrackerAgent
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(LogLevel.Trace);
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
@@ -19,6 +26,8 @@ namespace TimeTrackerAgent
                 .ConfigureWebHost(config =>
                 {
                     config.UseUrls("http://*:5050");
-                }).UseWindowsService();
+                })
+                .UseNLog()
+                .UseWindowsService();
     }
 }

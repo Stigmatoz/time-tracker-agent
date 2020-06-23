@@ -13,7 +13,7 @@ namespace TimeTrackerAgent.Utility
 
         public static string GetDirectoryPath()
         {
-            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Const.ProgramName);
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Const.ProgramName, Const.StorageFolderName);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
             

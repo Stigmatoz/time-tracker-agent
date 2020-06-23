@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == 'x86' ">x86</Platform>
     <Platform Condition=" '$(Platform)' == 'x64' ">x64</Platform>
-    <ProductVersion>1.0.4.0</ProductVersion>
+    <ProductVersion>1.0.0.0</ProductVersion>
     <ProjectGuid>312470b8-4dbf-4d1b-b4c1-f61b8db268d1</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>TimeTrackerAgent.Setup.$(ProductVersion)</OutputName>
