@@ -10,6 +10,7 @@
       <!-- Shortcut -->
       <ComponentRef Id="MainAppShortcut" />
       <ComponentRef Id="cmpFirewallException" />
+      <ComponentRef Id="TimeTrackerAutostart" />
 
     </ComponentGroup>
 
@@ -44,9 +45,16 @@
                 Port="5050" IgnoreFailure="yes" Profile="domain"/>
       </Component>
 
+      <Component Id="TimeTrackerAutostart" Guid="{B293F38F-AD4A-4F0A-9339-56997F49E1F1}">
+        <RegistryValue Id="TimeTrackerAuto" Root="HKMU" Action="write"
+                       Key="Software\Microsoft\Windows\CurrentVersion\Run"
+                       Name="Time Tracker Agent Auto start"
+                       Value="[INSTALLDIR]TimeTrackerAutostart.exe"
+                       Type="string" />
+        <Condition>ASSISTANCE_START_VIA_REGISTRY</Condition>
+      </Component>
+
     </DirectoryRef>
 
   </Fragment>
-
-
 </Wix>

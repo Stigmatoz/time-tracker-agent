@@ -51,6 +51,8 @@
     <!-- Help/Support website (shows in the Add/Remove programs) -->
     <Property Id="ARPURLINFOABOUT">castlewania.alex@gmail.com</Property>
 
+    <Property Id="ASSISTANCE_START_VIA_REGISTRY">1</Property>
+
     <!-- Create a basic UI for the installer -->
     <UIRef Id="WixUI_Minimal" />
 
