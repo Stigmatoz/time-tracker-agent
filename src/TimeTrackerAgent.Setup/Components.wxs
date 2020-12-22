@@ -49,7 +49,7 @@
         <RegistryValue Id="TimeTrackerAuto" Root="HKMU" Action="write"
                        Key="Software\Microsoft\Windows\CurrentVersion\Run"
                        Name="Time Tracker Agent Auto start"
-                       Value="[INSTALLDIR]TimeTrackerAutostart.exe"
+                       Value="[INSTALLFOLDER]TimeTrackerAgent.exe"
                        Type="string" />
         <Condition>ASSISTANCE_START_VIA_REGISTRY</Condition>
       </Component>
