@@ -38,7 +38,7 @@ namespace TimeTrackerAgent.Entity
         [XmlElement("IdleTime")]
         public string IdleTimeString
         {
-            get { return ActiveTime.ToString(); }
+            get { return IdleTime.ToString(); }
             set { IdleTime = TimeSpan.Parse(value); }
         }
 
