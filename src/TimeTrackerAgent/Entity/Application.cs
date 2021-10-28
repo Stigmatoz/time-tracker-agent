@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace TimeTrackerAgent.Entity
 {
@@ -21,8 +22,17 @@ namespace TimeTrackerAgent.Entity
         public string Name { get; set; }
         public string Path { get; set; }
         public string WindowTitle { get; set; }
+        [XmlIgnore]
         public byte[] Icon { get; set; }
+        [XmlIgnore]
         public TimeSpan SummaryTime { get; set; }
+
+        [XmlElement("SummaryTime")]
+        public string SummaryTimeString
+        {
+            get { return SummaryTime.ToString(); }
+            set { SummaryTime = TimeSpan.Parse(value); }
+        }
 
         #region Public
         public void IncrementSummary()
