@@ -3,11 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>492b46ad-59c3-4a7f-be25-551a48f7818b</UserSecretsId>
-    <Version>1.0.0.0</Version>
+    <Version>0.5.0.0</Version>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <OutputType>WinExe</OutputType>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
+    <ApplicationIcon />
+    <StartupObject />
+    <Authors>Stigmatoz</Authors>
+    <Company>TimeTrackerAgent</Company>
+    <Description>The TimeTrackerAgent keeps track of the time you spend on any desktop applications.</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
