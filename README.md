@@ -10,7 +10,7 @@ The application runs as a Windows service and has an api endpoint.
 <code>http://*:5050</code>
 Based on .net core 3.1.
 
-Time tracking runs in the background and saves all data in an xml document along the path <code>%ProgramData%/TimeTrackingAgent/Data</code> for Windows.
+Time tracking runs in the background and saves all data in an xml document along the path <code>%ProgramData%/TimeTrackerAgent/Data</code> for Windows.
 The application captures the active current window, detects the current program, and tracks the running time of the application. In addition, idle time is recorded when the user does nothing.
 
 The application can be extended to work with other platforms (linux).
